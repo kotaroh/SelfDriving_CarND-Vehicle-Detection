@@ -40,24 +40,25 @@ I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an 
 
 I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
 
-Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
+Here is an example using the `RGB` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
 
 
 ![alt text][image2]
 
 ####2. Explain how you settled on your final choice of HOG parameters.
 
-I tried various combinations of parameters and...
+I tried various combinations of parameters for orients, pixel per cell, and concluded the default parameters (orients = 9, pixel per cell = (8,8), cells per block = (2,2) is working relatively well. With other parameter combinations, the false positive such as detecting shadow as a car happens more frequently.
 
 ####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-I trained a linear SVM using...
+I trained a linear SVM using car images and non-car images provided to the project. It is in the section 4 "Training of the classifier". Not only hog features but also spatial features and color histgram features are extracted per image and used for the training of the classifier. For hog features, all of color channels are used to extract features.
 
 ###Sliding Window Search
 
 ####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):
+I implemented a sliding window search per the sample code in the lessons. The area for the search is limited to the areas where vehicle could be observed. Especially in this video, the vehicle is always on the left lane and vehicle would not be detected on the left side, so the search starts with x = 200 as x range.
+The window size is (96,96) and overlap is defined as 0.75
 
 ![alt text][image3]
 
