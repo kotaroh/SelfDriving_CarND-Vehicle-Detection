@@ -12,7 +12,7 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 [image1]: ./output_images/car_not_car.png
 [image2]: ./output_images/HOG_example.png
-[image3]: ./examples/sliding_windows.jpg
+[image3]: ./output_images/sliding_windows.png
 [image4]: ./examples/sliding_window.jpg
 [image5]: ./examples/bboxes_and_heat.png
 [image6]: ./examples/labels_map.png
@@ -58,13 +58,13 @@ I trained a linear SVM using car images and non-car images provided to the proje
 ####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
 I implemented a sliding window search per the sample code in the lessons. The area for the search is limited to the areas where vehicle could be observed. Especially in this video, the vehicle is always on the left lane and vehicle would not be detected on the left side, so the search starts with x = 200 as x range.
-The window size is (96,96) and overlap is defined as 0.75
+The window size is (64,64) and overlap fraction is defined as 0.75 between y = 400 and 7 = 528, and window size is (96,96) and overlap fraction is defined as 0.5 between y = 528 and 7 = 720
 
 ![alt text][image3]
 
 ####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
+I searched on two scales as described above using RGB 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided results as below.  Here are some example images:
 
 ![alt text][image4]
 ---
@@ -99,5 +99,5 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 ####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+I can think of two major issues. One is the pipeline still detects shadows as cars. Second is that detected cars are sometimes lost from the detection. Other than just improving the classifier, previous frame data could be used more effectively. A car should not suddenly show up or dismiss in the actual world. By using data of previous frames as hints to detect cars, the pipeline should becomoe more robust.
 
