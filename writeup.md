@@ -13,11 +13,15 @@ The goals / steps of this project are the following:
 [image1]: ./output_images/car_not_car.png
 [image2]: ./output_images/HOG_example.png
 [image3]: ./output_images/sliding_windows.png
-[image4]: ./examples/sliding_window.jpg
-[image5]: ./examples/bboxes_and_heat.png
-[image6]: ./examples/labels_map.png
-[image7]: ./examples/output_bboxes.png
-[video1]: ./project_video.mp4
+[image4]: ./output_images/sample_pipeline_image1.png
+[image5]: ./output_images/sample_pipeline_image3.png
+[image6]: ./output_images/sample_pipeline_image4.png
+[image7]: ./output_images/sample_pipeline_image6.png
+[image8]: ./output_images/sample_heatmap_image1.png
+[image9]: ./output_images/sample_heatmap_image3.png
+[image10]: ./output_images/sample_heatmap_image4.png
+[image11]: ./output_images/sample_heatmap_image6.png
+[video1]: ./project_vehicledetection_3.mp4
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points
 ###Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
@@ -58,7 +62,9 @@ I trained a linear SVM using car images and non-car images provided to the proje
 ####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
 I implemented a sliding window search per the sample code in the lessons. The area for the search is limited to the areas where vehicle could be observed. Especially in this video, the vehicle is always on the left lane and vehicle would not be detected on the left side, so the search starts with x = 200 as x range.
-The window size is (64,64) and overlap fraction is defined as 0.75 between y = 400 and 7 = 528, and window size is (96,96) and overlap fraction is defined as 0.5 between y = 528 and 7 = 720
+
+The window size is (64,64) and overlap fraction is defined as 0.75 between y = 400 and 7 = 528, and window size is (96,96) and overlap fraction is defined as 0.5 between y = 528 and 7 = 720. The area is described as below. This is because the vehicle will be observed as a bigger object when they are close, so no need to have smaller cells in the bottom half of the screen.
+
 
 ![alt text][image3]
 
@@ -67,12 +73,15 @@ The window size is (64,64) and overlap fraction is defined as 0.75 between y = 4
 I searched on two scales as described above using RGB 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided results as below.  Here are some example images:
 
 ![alt text][image4]
+![alt text][image5]
+![alt text][image6]
+![alt text][image7]
 ---
 
 ### Video Implementation
 
 ####1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](./project_vehicledetection_3.mp4)
 
 
 ####2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
@@ -81,15 +90,11 @@ I recorded the positions of positive detections in each frame of the video.  Fro
 
 Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
 
-### Here are six frames and their corresponding heatmaps:
-
-![alt text][image5]
-
-### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
-![alt text][image6]
-
-### Here the resulting bounding boxes are drawn onto the last frame in the series:
-![alt text][image7]
+### Here are four video detection results as a result of labeling and their corresponding heatmaps:
+![alt text][image8]
+![alt text][image9]
+![alt text][image10]
+![alt text][image11]
 
 
 
@@ -99,5 +104,7 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 ####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-I can think of two major issues. One is the pipeline still detects shadows as cars. Second is that detected cars are sometimes lost from the detection. Other than just improving the classifier, previous frame data could be used more effectively. A car should not suddenly show up or dismiss in the actual world. By using data of previous frames as hints to detect cars, the pipeline should becomoe more robust.
+I can think of two major issues. One is the pipeline still detects shadows as cars. Second is that detected cars are sometimes lost from the detection. 
+
+Previous frame data could be used more effectively to improve the pipeline, other than improving the classifier itself. A car should not suddenly show up or dismiss in the actual world. By using data of previous frames as hints to detect cars, the pipeline should become more robust.
 
